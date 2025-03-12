@@ -1,0 +1,11 @@
+{
+  "/api": {
+    "target": "https://api.cmfchile.cl/api-sbifv3/recursos_api",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

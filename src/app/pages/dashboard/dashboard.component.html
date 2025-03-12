@@ -1,0 +1,9 @@
+<h1>Indicadores</h1>
+
+<ul>
+  @for (indicator of indicators; track indicator.id) {
+  <li>
+    <button (click)="detailIndicator(indicator.id)">{{ indicator.name }}</button>
+  </li>
+  }
+</ul>
