@@ -3,6 +3,6 @@ export interface IndicatorResponse<T = IndicatorValue[]> {
 }
 
 export interface IndicatorValue {
-  Valor: string;
-  Fecha: string;
+  valor: string;
+  fecha: string;
 }

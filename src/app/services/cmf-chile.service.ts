@@ -17,16 +17,36 @@ export class CmfChileService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getCurrentValue(indicator: string): Observable<IndicatorResponse> {
-    const url = `${this.apiUrl}/${indicator}`;
+  getLast30DaysValues(
+    indicator: string,
+    year: number,
+    month: number,
+    day: number
+  ): Observable<IndicatorResponse[]> {
+    const url = `${this.apiUrl}/${indicator}/posteriores/${year}/${month}/dias/${day}`;
+
     return this.http
-      .get<IndicatorResponse>(url, { params: this.getParams() })
+      .get<IndicatorResponse[]>(url, { params: this.getParams() })
       .pipe(
         catchError((error) => {
-          console.error('Error al obtener datos de', indicator, error);
-          return throwError(
-            () => new Error('Error al obtener datos del indicador')
-          );
+          console.error('Error al obtener los valores:', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  getCurrentYearValues(
+    indicator: string,
+    year: number
+  ): Observable<IndicatorResponse[]> {
+    const url = `${this.apiUrl}/${indicator}/${year}`;
+
+    return this.http
+      .get<IndicatorResponse[]>(url, { params: this.getParams() })
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener los valores:', error);
+          return throwError(error);
         })
       );
   }

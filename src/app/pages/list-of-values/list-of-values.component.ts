@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CmfChileService } from '../../services/cmf-chile.service';
+import { getPastDate } from '../../utils/date.util';
 
 @Component({
   selector: 'app-list-of-values',
@@ -9,8 +10,7 @@ import { CmfChileService } from '../../services/cmf-chile.service';
   styleUrl: './list-of-values.component.css',
 })
 export class ListOfValuesComponent implements OnInit {
-  indicatorId: string | null = null;
-
+  
   constructor(
     private readonly route: ActivatedRoute,
     private readonly cmfChileService: CmfChileService
@@ -22,19 +22,43 @@ export class ListOfValuesComponent implements OnInit {
 
   getValueId = () => {
     this.route.paramMap.subscribe((params) => {
-      this.indicatorId = params.get('id');
-    });
+      const id = params.get('id');
 
-    if (this.indicatorId) {
-      this.getIndicatorValues(this.indicatorId);
+      if (id) {
+        this.getIndicatorValues(id);
+      } else {
+        console.log('No se encontró el id');
+      }
+    });
+  };
+
+  getIndicatorValues(indicator: string) {
+    const currentYear = new Date().getFullYear();
+
+    if (['dolar', 'euro', 'uf'].includes(indicator)) {
+      this.fetchLast30DaysValues(indicator);
+    } else if (['ipc', 'utm'].includes(indicator)) {
+      this.fetchCurrentYearValues(indicator, currentYear);
     } else {
-      console.log('No se encontró el id');
+      console.log('Indicador no válido');
     }
-  };
+  }
 
-  getIndicatorValues = (indicator: string) => {
-    this.cmfChileService.getCurrentValue(indicator).subscribe((res) => {
-      console.log(res);
-    });
-  };
+  fetchLast30DaysValues(indicator: string) {
+    const { year, month, day } = getPastDate(30);
+
+    this.cmfChileService
+      .getLast30DaysValues(indicator, year, month, day)
+      .subscribe((data) => {
+        console.log(`Valores de ${indicator} en los últimos 30 días:`, data);
+      });
+  }
+
+  fetchCurrentYearValues(indicator: string, currentYear: number) {
+    this.cmfChileService
+      .getCurrentYearValues(indicator, currentYear)
+      .subscribe((data) => {
+        console.log(`Valores de ${indicator} en el año ${currentYear}:`, data);
+      });
+  }
 }
