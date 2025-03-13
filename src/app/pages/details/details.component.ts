@@ -14,6 +14,8 @@ import { IndicatorValue } from '../../interfaces/indicator.interface';
 export class DetailsComponent implements OnInit {
   indicatorValues: IndicatorValue[] = [];
   indicatorName: string = '';
+  indicatorValue: string = '0';
+  indicatorLastDate: string = '';
   unit: string = 'Pesos';
 
   constructor(
@@ -37,13 +39,23 @@ export class DetailsComponent implements OnInit {
     });
   };
 
+  private setIndicatorMetadata(data: Record<string, any>) {
+    const key = Object.keys(data)[0] ?? '';
+
+    this.indicatorName = key;
+    const valuesArray = data[key] ?? [];
+
+    this.indicatorValue = valuesArray.at(-1)?.Valor ?? '0';
+    this.indicatorLastDate = valuesArray.at(-1)?.Fecha ?? '';
+  }
+
   getDetailByIndicator(indicator: string): void {
     if (['dolar', 'euro', 'uf'].includes(indicator)) {
       this.fetchLastNDaysValues(indicator);
     } else if (['ipc', 'utm'].includes(indicator)) {
       this.fetchLast12MonthsValues(indicator);
     } else {
-      console.warn(`❌ Indicador no reconocido: ${indicator}`);
+      console.warn(`Indicador no reconocido: ${indicator}`);
     }
   }
 
@@ -53,9 +65,7 @@ export class DetailsComponent implements OnInit {
     this.cmfChileService
       .getLastNDaysValues({ indicator, ...pastDate })
       .subscribe((data) => {
-        const key = Object.keys(data)[0];
-        this.indicatorName = key;
-        console.log(`📊 Valores de ${indicator} en los últimos 10 días:`, data);
+        this.setIndicatorMetadata(data);
         this.indicatorValues = extractIndicatorValues(data, indicator);
       });
   }
@@ -66,12 +76,7 @@ export class DetailsComponent implements OnInit {
     this.cmfChileService
       .getLast12MonthsValues({ indicator, ...period })
       .subscribe((data) => {
-        const key = Object.keys(data)[0];
-        this.indicatorName = key;
-        console.log(
-          `📊 Valores de ${indicator} en los últimos 12 meses:`,
-          data
-        );
+        this.setIndicatorMetadata(data);
         this.indicatorValues = extractIndicatorValues(data, indicator);
       });
   }

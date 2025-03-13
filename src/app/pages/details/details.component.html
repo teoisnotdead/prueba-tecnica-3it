@@ -1,6 +1,6 @@
 <div>
   <h1>
-    $ {{ indicatorValues[0].Valor }}
+    $ {{ indicatorValue }}
   </h1>
 
   <div>
@@ -8,7 +8,7 @@
     <input type="text" [value]="indicatorName" readonly>
 
     <label><strong>Fecha</strong></label>
-    <input type="text" [value]="indicatorValues[0].Fecha" readonly>
+    <input type="text" [value]="indicatorLastDate" readonly>
 
     <label><strong>Unidad de Medida</strong></label>
     <input type="text" [value]="unit" readonly>
