@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CmfChileService } from '../../services/cmf-chile.service';
 import { getPastDate } from '../../utils/date.util';
 import { IndicatorValue } from '../../interfaces/indicator.interface';
 import { extractIndicatorValues } from '../../utils/toMatchValue';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-list-of-values',
-  imports: [],
+  imports: [CommonModule, MatTableModule, MatIcon],
   templateUrl: './list-of-values.component.html',
   styleUrl: './list-of-values.component.css',
 })
 export class ListOfValuesComponent implements OnInit {
   indicatorValues: IndicatorValue[] = [];
+  displayedColumns: string[] = ['fecha', 'valor'];
+  indicatorName: string = '';
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly cmfChileService: CmfChileService
+    private readonly cmfChileService: CmfChileService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit() {
@@ -54,6 +60,7 @@ export class ListOfValuesComponent implements OnInit {
       .getLastNDaysValues({ indicator, year, month, day })
       .subscribe((data) => {
         this.indicatorValues = extractIndicatorValues(data, indicator);
+        this.indicatorName = indicator;
       });
   }
 
@@ -62,6 +69,11 @@ export class ListOfValuesComponent implements OnInit {
       .getCurrentYearValues({ indicator, year: currentYear })
       .subscribe((data) => {
         this.indicatorValues = extractIndicatorValues(data, indicator);
+        this.indicatorName = indicator;
       });
+  }
+
+  goBack() {
+    this.router.navigate(['/']);
   }
 }
