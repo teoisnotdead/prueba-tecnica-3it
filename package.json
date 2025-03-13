@@ -1,6 +1,7 @@
 {
   "name": "prueba-tecnica-3it",
   "version": "0.0.0",
+  "author": "Salvador Alfredo Saavedra San Martin",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

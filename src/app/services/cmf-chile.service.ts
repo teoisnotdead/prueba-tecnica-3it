@@ -6,7 +6,6 @@ import {
   IndicatorRequestParams,
   IndicatorResponse,
 } from '../interfaces/indicator.interface';
-import { getLast12Months } from '../utils/date.util';
 
 @Injectable({
   providedIn: 'root',

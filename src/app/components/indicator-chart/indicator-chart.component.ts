@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { IndicatorValue } from '../../interfaces/indicator.interface';
-
+import { Chart, registerables } from 'chart.js';
 @Component({
   selector: 'indicator-chart',
   standalone: true,
@@ -12,6 +12,10 @@ import { IndicatorValue } from '../../interfaces/indicator.interface';
 })
 export class IndicatorChartComponent implements OnChanges {
   @Input() indicatorData!: IndicatorValue[];
+
+  constructor() {
+    Chart.register(...registerables);
+  }
 
   lineChartData: ChartData<'line'> = {
     labels: [],
@@ -26,11 +30,10 @@ export class IndicatorChartComponent implements OnChanges {
   ngOnChanges() {
     if (!this.indicatorData || this.indicatorData.length === 0) return;
 
-    // 🔥 Extrae los valores correctamente y los convierte a número
     const values = this.indicatorData;
 
     this.lineChartData = {
-      labels: values.map((val) => val.Fecha ?? ''), // Fechas para el eje X
+      labels: values.map((val) => val.Fecha ?? ''),
       datasets: [
         {
           data: values.map((val) => parseFloat(val.Valor ?? '0')),
