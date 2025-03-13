@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CmfChileService } from '../../services/cmf-chile.service';
 import { getLast12Months, getPastDate } from '../../utils/date.util';
 import { extractIndicatorValues } from '../../utils/toMatchValue';
 import { IndicatorValue } from '../../interfaces/indicator.interface';
 import { IndicatorChartComponent } from '../../components/indicator-chart/indicator-chart.component';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-details',
-  imports: [IndicatorChartComponent],
+  imports: [IndicatorChartComponent, MatIcon],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
 })
@@ -17,11 +18,13 @@ export class DetailsComponent implements OnInit {
   indicatorName: string = '';
   indicatorValue: string = '0';
   indicatorLastDate: string = '';
+  indicatorKey: string = '';
   unit: string = 'Pesos';
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly cmfChileService: CmfChileService
+    private readonly cmfChileService: CmfChileService,
+    private readonly router: Router
   ) {}
 
   ngOnInit() {
@@ -31,6 +34,7 @@ export class DetailsComponent implements OnInit {
   getValueId = () => {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
+      this.indicatorKey = id ?? '';
 
       if (id) {
         this.getDetailByIndicator(id);
@@ -80,5 +84,9 @@ export class DetailsComponent implements OnInit {
         this.setIndicatorMetadata(data);
         this.indicatorValues = extractIndicatorValues(data, indicator);
       });
+  }
+
+  goBack() {
+    this.router.navigate(['/']);
   }
 }

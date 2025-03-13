@@ -1,6 +1,4 @@
 export function extractIndicatorValues(data: Record<string, any>, indicator: string): any[] {
-  console.log('Claves disponibles en data:', Object.keys(data));
-
   // Mapeo de nombres esperados a nombres en la API
   const indicatorKeyMap: Record<string, string> = {
     dolar: 'Dolares',

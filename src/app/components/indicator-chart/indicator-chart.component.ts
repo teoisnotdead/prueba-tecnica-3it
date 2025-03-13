@@ -42,7 +42,5 @@ export class IndicatorChartComponent implements OnChanges {
         },
       ],
     };
-
-    console.log('📊 Datos del gráfico:', this.lineChartData);
   }
 }

@@ -1,17 +1,33 @@
-<div>
-  <h1>
-    $ {{ indicatorValue }}
-  </h1>
-
-  <div>
-    <label><strong>Nombre</strong></label>
-    <input type="text" [value]="indicatorName" readonly>
-
-    <label><strong>Fecha</strong></label>
-    <input type="text" [value]="indicatorLastDate" readonly>
-
-    <label><strong>Unidad de Medida</strong></label>
-    <input type="text" [value]="unit" readonly>
+<div class="container mt-4">
+  <!-- Botón Volver -->
+  <div class="d-flex justify-content-end mb-4">
+    <button class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon> Volver
+    </button>
   </div>
-  <indicator-chart [indicatorData]="indicatorValues"></indicator-chart>
+
+
+
+  <h2 class="text-primary d-flex align-items-center">
+    <mat-icon class="me-2">bar_chart</mat-icon>
+    <strong class="text-capitalize me-4">{{ indicatorKey }}</strong>
+    <span class="text-secondary">$ {{ indicatorValue }}</span>
+  </h2>
+
+  <!-- Contenedor de Información -->
+  <div class="card p-4 shadow-sm">
+    <div class="row">
+      <div class="col-md-4">
+        <p><strong>Fecha:</strong> {{ indicatorLastDate }}</p>
+      </div>
+      <div class="col-md-4">
+        <p><strong>Unidad de Medida:</strong> {{ unit }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfico -->
+  <div class="mt-4">
+    <indicator-chart [indicatorData]="indicatorValues"></indicator-chart>
+  </div>
 </div>
