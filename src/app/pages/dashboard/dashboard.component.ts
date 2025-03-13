@@ -13,8 +13,12 @@ export class DashboardComponent {
 
   constructor(private readonly router: Router) { }
 
-  detailIndicator(idicatorId: string) {
+  listOfValue(idicatorId: string) {
     this.router.navigate(['/valores', idicatorId]);
+  }
+
+  deleteIndicator(idicatorId: string) {
+    this.router.navigate(['/detalles', idicatorId]);
   }
 
 }

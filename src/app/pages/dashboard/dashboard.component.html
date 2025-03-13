@@ -2,8 +2,11 @@
 
 <ul>
   @for (indicator of indicators; track indicator.id) {
+
   <li>
-    <button (click)="detailIndicator(indicator.id)">{{ indicator.name }}</button>
+    <strong>Nombre:</strong> {{ indicator.name }}
+    <button (click)="listOfValue(indicator.id)">Listado Valores</button>
+    <button (click)="deleteIndicator(indicator.id)">Detalles</button>
   </li>
   }
 </ul>

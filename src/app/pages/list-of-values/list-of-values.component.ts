@@ -51,7 +51,7 @@ export class ListOfValuesComponent implements OnInit {
     const { year, month, day } = getPastDate(30);
 
     this.cmfChileService
-      .getLast30DaysValues({ indicator, year, month, day })
+      .getLastNDaysValues({ indicator, year, month, day })
       .subscribe((data) => {
         this.indicatorValues = extractIndicatorValues(data, indicator);
       });

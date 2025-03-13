@@ -3,8 +3,8 @@ export interface IndicatorResponse {
 }
 
 export interface IndicatorValue {
-  Valor: string;
-  Fecha: string;
+  Valor?: string;
+  Fecha?: string;
 }
 
 export interface IndicatorRequestParams {

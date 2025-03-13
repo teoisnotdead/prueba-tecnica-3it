@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { IndicatorRequestParams, IndicatorResponse } from '../interfaces/indicator.interface';
+import {
+  IndicatorRequestParams,
+  IndicatorResponse,
+} from '../interfaces/indicator.interface';
+import { getLast12Months } from '../utils/date.util';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +21,9 @@ export class CmfChileService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getLast30DaysValues(params: IndicatorRequestParams): Observable<IndicatorResponse> {
+  getLastNDaysValues(
+    params: IndicatorRequestParams
+  ): Observable<IndicatorResponse> {
     const { indicator, year, month, day } = params;
     const url = `${this.apiUrl}/${indicator}/posteriores/${year}/${month}/dias/${day}`;
     return this.http
@@ -30,7 +36,9 @@ export class CmfChileService {
       );
   }
 
-  getCurrentYearValues(params: IndicatorRequestParams): Observable<IndicatorResponse> {
+  getCurrentYearValues(
+    params: IndicatorRequestParams
+  ): Observable<IndicatorResponse> {
     const { indicator, year } = params;
     const url = `${this.apiUrl}/${indicator}/${year}`;
 
@@ -40,6 +48,26 @@ export class CmfChileService {
         catchError((error) => {
           console.error('Error al obtener los valores:', error);
           return throwError(error);
+        })
+      );
+  }
+
+  getLast12MonthsValues(params: {
+    indicator: string;
+    startYear: number;
+    startMonth: number;
+    endYear: number;
+    endMonth: number;
+  }): Observable<IndicatorResponse> {
+    const { indicator, startYear, startMonth, endYear, endMonth } = params;
+    const url = `${this.apiUrl}/${indicator}/periodo/${startYear}/${startMonth}/${endYear}/${endMonth}`;
+
+    return this.http
+      .get<IndicatorResponse>(url, { params: this.getParams() })
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener los valores:', error);
+          throw error;
         })
       );
   }
