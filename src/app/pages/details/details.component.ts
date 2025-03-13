@@ -4,10 +4,11 @@ import { CmfChileService } from '../../services/cmf-chile.service';
 import { getLast12Months, getPastDate } from '../../utils/date.util';
 import { extractIndicatorValues } from '../../utils/toMatchValue';
 import { IndicatorValue } from '../../interfaces/indicator.interface';
+import { IndicatorChartComponent } from '../../components/indicator-chart/indicator-chart.component';
 
 @Component({
   selector: 'app-details',
-  imports: [],
+  imports: [IndicatorChartComponent],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
 })
