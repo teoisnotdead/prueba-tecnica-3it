@@ -1,8 +1,8 @@
-export interface IndicatorResponse<T = IndicatorValue[]> {
-  [key: string]: T;
+export interface IndicatorResponse {
+  [key: string]: IndicatorValue[];
 }
 
 export interface IndicatorValue {
-  valor: string;
-  fecha: string;
+  Valor: string;
+  Fecha: string;
 }

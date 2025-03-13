@@ -22,11 +22,10 @@ export class CmfChileService {
     year: number,
     month: number,
     day: number
-  ): Observable<IndicatorResponse[]> {
+  ): Observable<IndicatorResponse> {
     const url = `${this.apiUrl}/${indicator}/posteriores/${year}/${month}/dias/${day}`;
-
     return this.http
-      .get<IndicatorResponse[]>(url, { params: this.getParams() })
+      .get<IndicatorResponse>(url, { params: this.getParams() })
       .pipe(
         catchError((error) => {
           console.error('Error al obtener los valores:', error);
@@ -38,11 +37,11 @@ export class CmfChileService {
   getCurrentYearValues(
     indicator: string,
     year: number
-  ): Observable<IndicatorResponse[]> {
+  ): Observable<IndicatorResponse> {
     const url = `${this.apiUrl}/${indicator}/${year}`;
 
     return this.http
-      .get<IndicatorResponse[]>(url, { params: this.getParams() })
+      .get<IndicatorResponse>(url, { params: this.getParams() })
       .pipe(
         catchError((error) => {
           console.error('Error al obtener los valores:', error);

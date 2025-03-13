@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CmfChileService } from '../../services/cmf-chile.service';
 import { getPastDate } from '../../utils/date.util';
+import { IndicatorValue } from '../../interfaces/indicator.interface';
+import { extractIndicatorValues } from '../../utils/toMatchValue';
 
 @Component({
   selector: 'app-list-of-values',
@@ -10,7 +12,8 @@ import { getPastDate } from '../../utils/date.util';
   styleUrl: './list-of-values.component.css',
 })
 export class ListOfValuesComponent implements OnInit {
-  
+  indicatorValues: IndicatorValue[] = [];
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly cmfChileService: CmfChileService
@@ -50,7 +53,7 @@ export class ListOfValuesComponent implements OnInit {
     this.cmfChileService
       .getLast30DaysValues(indicator, year, month, day)
       .subscribe((data) => {
-        console.log(`Valores de ${indicator} en los últimos 30 días:`, data);
+        this.indicatorValues = extractIndicatorValues(data, indicator);
       });
   }
 
@@ -58,7 +61,7 @@ export class ListOfValuesComponent implements OnInit {
     this.cmfChileService
       .getCurrentYearValues(indicator, currentYear)
       .subscribe((data) => {
-        console.log(`Valores de ${indicator} en el año ${currentYear}:`, data);
+        this.indicatorValues = extractIndicatorValues(data, indicator);
       });
   }
 }

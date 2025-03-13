@@ -1,1 +1,11 @@
-<p>list-of-values works!</p>
+<h2>Indicadores Economicos</h2>
+
+<ul>
+    @for (indicator of indicatorValues; track indicator.Fecha) {
+        <li>
+            <strong>Fecha:</strong> {{ indicator.Fecha }}<br>
+            <strong>Valor:</strong> {{ indicator.Valor }}
+        </li>
+    }
+
+</ul>
