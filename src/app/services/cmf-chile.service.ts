@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { IndicatorResponse } from '../interfaces/indicator.interface';
+import { IndicatorRequestParams, IndicatorResponse } from '../interfaces/indicator.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,12 +17,8 @@ export class CmfChileService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getLast30DaysValues(
-    indicator: string,
-    year: number,
-    month: number,
-    day: number
-  ): Observable<IndicatorResponse> {
+  getLast30DaysValues(params: IndicatorRequestParams): Observable<IndicatorResponse> {
+    const { indicator, year, month, day } = params;
     const url = `${this.apiUrl}/${indicator}/posteriores/${year}/${month}/dias/${day}`;
     return this.http
       .get<IndicatorResponse>(url, { params: this.getParams() })
@@ -34,10 +30,8 @@ export class CmfChileService {
       );
   }
 
-  getCurrentYearValues(
-    indicator: string,
-    year: number
-  ): Observable<IndicatorResponse> {
+  getCurrentYearValues(params: IndicatorRequestParams): Observable<IndicatorResponse> {
+    const { indicator, year } = params;
     const url = `${this.apiUrl}/${indicator}/${year}`;
 
     return this.http
